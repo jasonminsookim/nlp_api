@@ -1,3 +1,16 @@
-fn main() {
-    println!("Hello, world! I am really tired. What's up? My name is Jason");
+use axum::{routing::get, Router};
+
+#[tokio::main]
+async fn main() {
+    // build our application with a single route
+    let app = Router::new().route(
+        "/",
+        get(|| async { "Hello, World! Jason is starting to learn backend." }),
+    );
+
+    // run it with hyper on localhost:3000
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
 }
